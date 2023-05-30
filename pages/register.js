@@ -2,15 +2,15 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import './layout' ;
-import { metadata } from './layout';
+// import './layout' ;
+// import { metadata } from './layout';
 import { FaEnvelope, FaLock, FaRegistered, FaUser } from 'react-icons/fa';
 import { AiFillCustomerService, AiFillEye, AiFillFacebook, AiFillGithub, AiFillGoogleCircle, AiFillLock } from "react-icons/ai";
 import { useState } from 'react';
+import App from './_app';
 
 
 const Register = () => {
-   metadata.title = "register";
    const[show, setShow]= useState();
 
     
@@ -19,7 +19,7 @@ const Register = () => {
         
          <Head>
             
-            <title>{metadata.title}</title>
+            <title>Register</title>
          </Head>
 
         <div className="register-container container-fluid content">

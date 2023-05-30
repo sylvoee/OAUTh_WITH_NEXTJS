@@ -3,15 +3,16 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import './layout' ;
-import { metadata } from './layout';
+// import { metadata } from './layout';
 import { FaEnvelope, FaFacebook, FaGithub, FaLock, FaUser } from 'react-icons/fa';
 import { AiFillEye, AiFillFacebook, AiFillGithub, AiFillGoogleCircle, AiFillLock } from "react-icons/ai";
 import { useCallback, useState } from 'react';
 import{useSession, signIn, signOut} from 'next-auth/react' ;
+import App from './_app';
 
 
 const Login = () => {
-    metadata.title = "login";
+   //  metadata.title = "login";
     const[show, setShow] = useState()
 
     // Handle Google signIn
@@ -35,7 +36,7 @@ const Login = () => {
         
          <Head>
             
-            <title>{metadata.title}</title>
+            <title>Login</title>
          </Head>
 
         <div className="login-container container-fluid content">

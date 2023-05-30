@@ -1,62 +1,48 @@
-import { Mea_Culpa } from "next/font/google";
-import Head from "next/head";
-import { Children, useState } from "react";
-import { metadata } from "./layout";
-import {useSession, SessionProvider} from 'next-auth/react';
-import{session} from 'next-auth';
+
+import { useSession } from "next-auth/react" ;
+import Head from "next/head" ;
+import Image from "next/image";
+
+export default function Component() {
+  const { data: session, status } = useSession()
+     
 
 
+  if (status === "authenticated") {
+    console.log(session.user)
+    return (
+      <>
+      <Head>
+             <title>{session.user.name}</title>
+      </Head>
 
-const Home = () => {
-  
-  metadata.description = "This is the new heading";
-  metadata.title = "Home" ;
-  const { data: session, status } = useSession() ;
+      <div className="user-auth">
+       <Image src={session.user.image} width ={40} height ={40}></Image>
+     <p> Signed in as {session.user.email}</p>
+     <p> Signed in as {session.user.name}</p>
+     <div className="bg-info">
+      <button className="btn btn-danger">Logout</button>
+      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem perspiciatis expedita 
+        repudiandae vitae magni laudantium sit dolor modi enim ducimus!</p>
+     </div>
 
-  return (
-
-    <>
-  
-    <div className="container-fluid">
-    {session ? User() : Guest()}
-    </div>
+      </div>
+      </>
+    )
     
-    </>
-  );
-  
+
+  }else{
+    return(
+      <>
+      <Head>
+        <title>Home Page</title>
+      </Head>
+      <div className="not-auth">
+        <h3 className="h3">Not Authorised</h3>
+      </div>
+      </>
+    )
+  }
+
+  return <a href="/api/auth/signin">Sign in</a>
 }
-
-
-// GUEST uSER
-const Guest = () => {
-  metadata.title = "Home Guest"
-  return ( 
-    <>
-   
-    <div className="content">
-      <h3 className="h3">Guest users</h3>
-      <button className="btn btn-default login">Login</button>
-    </div>
-   
-    </>
-   );
-}
- 
-
-
-//  AUTHORISED USER
-const User =({session})=>{
-  metadata.title = ""
-  return(
-    <>
-    <h3 className="h3">{session.user.name} </h3>
-    <i>{session.user.email}</i>
-    <button className="btn btn-danger">Logout</button>
-    
-    </>
-  );
-}
-
-
- 
-export default Home;
