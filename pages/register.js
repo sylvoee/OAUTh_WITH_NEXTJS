@@ -2,16 +2,22 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-// import './layout' ;
-// import { metadata } from './layout';
 import { FaEnvelope, FaLock, FaRegistered, FaUser } from 'react-icons/fa';
 import { AiFillCustomerService, AiFillEye, AiFillFacebook, AiFillGithub, AiFillGoogleCircle, AiFillLock } from "react-icons/ai";
 import { useState } from 'react';
 import App from './_app';
-
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { redirect } from 'next/dist/server/api-utils';
 
 const Register = () => {
    const[show, setShow]= useState();
+   const{status} = useSession()
+   const router = useRouter();
+
+   if(status ==='authenticated'){
+      router.push('/');
+     }
 
     
     return ( 
@@ -32,17 +38,24 @@ const Register = () => {
                 <div className="col-sm-6 register-form p-2">
                 <div className="register col-sm-8 mt-5">
               
-              <h3 className="h3"><FaUser size={30}></FaUser> <b className='d-flex justify-content-end'>register</b> </h3>
+              <h3 className="h3"><FaUser size={30}></FaUser> <b className='d-flex flex-end'>register</b> </h3>
              
              
              
               <hr></hr>
   
-              <form action="" className="form-group register-form  ">
+              <form action="/signup" method ="POST" className="form-group register-form ">
+
+              <div>
+                 <label htmlFor="Name">Name</label>
+                 <span className='input-icon'><FaUser></FaUser></span>
+                 <input type="text" className="form-control"name="name" placeholder="John Doe" />
+                 </div>
+
                  <div>
                  <label htmlFor="username">username/email</label>
                  <span className='input-icon'><FaEnvelope></FaEnvelope></span>
-                 <input type="text" className="form-control"name="username" placeholder="sylvoee@gmail.com" />
+                 <input type="text" className="form-control"name="email" placeholder="sylvoee@gmail.com" />
                  </div>
   
                  <div>

@@ -9,14 +9,18 @@ import { AiFillEye, AiFillFacebook, AiFillGithub, AiFillGoogleCircle, AiFillLock
 import { useCallback, useState } from 'react';
 import{useSession, signIn, signOut} from 'next-auth/react' ;
 import App from './_app';
+import { useRouter } from 'next/router';
 
 
 const Login = () => {
    //  metadata.title = "login";
     const[show, setShow] = useState()
+    const{data:session, status} =useSession();
+    const router = useRouter();
 
     // Handle Google signIn
      const handlegoogleSignin =()=>{
+      
       signIn('google', {callBackUrl: 'http://localhost:3000'});
 
     }
@@ -30,7 +34,11 @@ const Login = () => {
    signIn('github', {callBackUrl: 'http://localhost:3000'});
 
     }
-    
+
+    if(status ==='authenticated'){
+      router.push('/');
+     }
+     
     return ( 
         <>
         

@@ -1,27 +1,28 @@
 
-import { useSession } from "next-auth/react" ;
+import { signOut, useSession } from "next-auth/react" ;
 import Head from "next/head" ;
 import Image from "next/image";
 
 export default function Component() {
-  const { data: session, status } = useSession()
-     
+  const { data :session, status } = useSession();
 
+  const handleSignOut =()=>{
+    signOut();
 
-  if (status === "authenticated") {
-    console.log(session.user)
+  }
+
+  if (status === "authenticated") { 
     return (
       <>
       <Head>
              <title>{session.user.name}</title>
       </Head>
-
       <div className="user-auth">
-       <Image src={session.user.image} width ={40} height ={40}></Image>
+       <Image src={session.user.image} width ={40} height ={40} alt ="Profile image"></Image>
      <p> Signed in as {session.user.email}</p>
      <p> Signed in as {session.user.name}</p>
      <div className="bg-info">
-      <button className="btn btn-danger">Logout</button>
+      <button onClick={handleSignOut} className="btn btn-danger">Logout</button>
       <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem perspiciatis expedita 
         repudiandae vitae magni laudantium sit dolor modi enim ducimus!</p>
      </div>
@@ -30,7 +31,6 @@ export default function Component() {
       </>
     )
     
-
   }else{
     return(
       <>
