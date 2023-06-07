@@ -9,6 +9,7 @@ import App from './_app';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { redirect } from 'next/dist/server/api-utils';
+import { useFormik } from 'formik';
 
 const Register = () => {
    const[show, setShow]= useState();
@@ -18,6 +19,23 @@ const Register = () => {
    if(status ==='authenticated'){
       router.push('/');
      }
+
+     // onSubmit function
+     const onSubmitPost = async (values) =>{
+      console.log(values)
+     }
+
+     // Using formik liberary
+     const formik = useFormik({
+      initialValues: {
+        name : '', 
+        firstName: '',
+        lastName: '',
+        email: '',
+        confirmPassword : ''
+      },
+      onSubmit : onSubmitPost
+    });
 
     
     return ( 
@@ -44,30 +62,30 @@ const Register = () => {
              
               <hr></hr>
   
-              <form action="/signup" method ="POST" className="form-group register-form ">
+              <form action="" onSubmit = {formik.handleSubmit} className="form-group register-form ">
 
               <div>
                  <label htmlFor="Name">Name</label>
                  <span className='input-icon'><FaUser></FaUser></span>
-                 <input type="text" className="form-control"name="name" placeholder="John Doe" />
+                 <input type="text" onChange={formik.handleChange} value ={formik.values.name} className="form-control"name="name" placeholder="John Doe" />
                  </div>
 
                  <div>
                  <label htmlFor="username">username/email</label>
                  <span className='input-icon'><FaEnvelope></FaEnvelope></span>
-                 <input type="text" className="form-control"name="email" placeholder="sylvoee@gmail.com" />
+                 <input type="text" onChange={formik.handleChange} value ={formik.values.email} className="form-control"name="email" placeholder="sylvoee@gmail.com" />
                  </div>
   
                  <div>
                  <label htmlFor="password">Password</label>
                  <span className='input-icon'><AiFillLock></AiFillLock></span>
-                 <input type={`${show ? "text" : "password"}`} className="form-control" name="password"  />
+                 <input type={`${show ? "text" : "password"}`} onChange={formik.handleChange} value ={formik.values.password} className="form-control" name="password"  />
                  </div>
   
                  <div>
                  <label htmlFor="password">Confirm Password</label>
                  <span className='input-icon'><AiFillLock></AiFillLock></span>
-                 <input type={`${show ? "text" : "password"}`} className="form-control" name="confirm-password"  />
+                 <input type={`${show ? "text" : "password"}`} onChange={formik.handleChange} value ={formik.values.confirmPassword }  className="form-control" name="confirmPassword"  />
                  </div>
   
                  <div className='mt-2'>

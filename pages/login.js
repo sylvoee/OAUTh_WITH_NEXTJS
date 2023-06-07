@@ -3,13 +3,15 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import './layout' ;
-// import { metadata } from './layout';
 import { FaEnvelope, FaFacebook, FaGithub, FaLock, FaUser } from 'react-icons/fa';
 import { AiFillEye, AiFillFacebook, AiFillGithub, AiFillGoogleCircle, AiFillLock } from "react-icons/ai";
 import { useCallback, useState } from 'react';
 import{useSession, signIn, signOut} from 'next-auth/react' ;
 import App from './_app';
 import { useRouter } from 'next/router';
+import {connection } from '@/database/conn';
+import { useFormik } from 'formik';
+
 
 
 const Login = () => {
@@ -18,11 +20,35 @@ const Login = () => {
     const{data:session, status} =useSession();
     const router = useRouter();
 
+
+
+    // The onSubmit function
+   const onSubmit = async (values) =>{
+   // console.log(values);
+    
+   // calling the signIn method
+   const status = await signIn('Credentials', {
+      redirect : false,
+      email: values.email,
+      password : values.password,
+      callbackUrl: "/"
+   });
+   console.log(status)
+   }
+
+   const formik = useFormik({
+      initialValues : {
+      email: '',
+      password : ''
+   },
+      // the on onSubmit function is created above
+      onSubmit 
+     });
+
+
     // Handle Google signIn
      const handlegoogleSignin =()=>{
-      
       signIn('google', {callBackUrl: 'http://localhost:3000'});
-
     }
     // Handle facebook signIn
       const handleFbSignin =()=>{
@@ -41,9 +67,7 @@ const Login = () => {
      
     return ( 
         <>
-        
          <Head>
-            
             <title>Login</title>
          </Head>
 
@@ -63,22 +87,28 @@ const Login = () => {
              
               <hr></hr>
   
-              <form action="" className="form-group login-form">
+              <form action="" className="form-group login-form" onSubmit ={formik.handleSubmit}>
                  <div>
                  <label htmlFor="username">username/email</label>
                  <span className='input-icon'><FaEnvelope></FaEnvelope></span>
-                 <input type="text" className="form-control"name="username" placeholder="sylvoee@gmail.com" />
+                 <input type="text"  className="form-control"name="email" placeholder="sylvoee@gmail.com"
+                 onChange={formik.handleChange}
+                 value={formik.values.email}
+                 />
                  </div>
   
                  <div>
                  <label htmlFor="password">Password</label>
                  <span className='input-icon'><AiFillLock></AiFillLock></span>
-                 <input  type= {`${show ? "text" : "password"}`}  className="form-control" name="password"  />
+                 <input  type= {`${show ? "text" : "password"}`} className="form-control" name="password"
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                 />
                  </div>
   
   
                  <div className='mt-2'>
-                 <button className="btn btn-success w-100 border-none">Login...</button> 
+                 <button className="btn btn-success w-100 border-none"  >Login...</button> 
                  </div>
               </form>
 
